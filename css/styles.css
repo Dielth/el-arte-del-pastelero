@@ -1,0 +1,249 @@
+html {
+  /* scroll-padding-top se ajusta dinámicamente por JS */
+}
+
+/* Importar fuentes */
+@font-face {
+  font-family: "Dancing Script";
+  src: url("../fonts/DancingScript-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Ink Free";
+  src: url("../fonts/Inkfree.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Montserrat Bold";
+  src: url("../fonts/Montserrat-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Neon";
+  src: url("../fonts/Neon.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Special Elite";
+  src: url("../fonts/SpecialElite.woff2") format("woff2");
+}
+
+/* Variables globales */
+:root {
+  --primary-color: #b36230;
+  --secondary-color: #f13636;
+  --accent-color: #f1c40f;
+  --text-color: #ffffff;
+  --background-color: #000000;
+  --card-background: #232323;
+  --new-white: #ffffff;
+  --new-black: #000000;
+  --shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+  --header-height: 0px; /* Será sobrescrito por JS */
+  --header-transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Estilos generales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Montserrat Bold", sans-serif;
+  line-height: 1.6;
+  color: var(--new-black);
+  background-color: var(--background-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* padding-top se ajusta dinámicamente por JS */
+}
+
+/* Header y navegación */
+header {
+  background-color: var(--primary-color);
+  padding: 1rem 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow);
+  min-height: auto;
+  transition: var(--header-transition);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+header.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-family: "Special Elite", cursive;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--accent-color);
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto; /* Eliminar margin-top ya que padding-top lo maneja el body */
+  padding: 2rem 1rem;
+  flex: 1;
+}
+
+/* Títulos */
+h1 {
+  font-family: "Dancing Script", cursive;
+  font-size: 3rem;
+  color: var(--new-white);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+h2 {
+  font-family: "Neon", cursive;
+  font-size: 2rem;
+  color: var(--secondary-color);
+  margin-bottom: 1.5rem;
+}
+
+h4 {
+  text-align: center;
+  color: var(--new-white);
+}
+
+/* Grid de recetas */
+.recetas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Tarjetas de receta */
+.receta {
+  background: var(--card-background);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.receta:hover {
+  transform: translateY(-5px);
+}
+
+.receta h3 {
+  font-family: "Ink Free", cursive;
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.receta p {
+  font-family: "Montserrat Bold", sans-serif;
+  margin-bottom: 0.5rem;
+  color: var(--new-white);
+}
+
+/* Botones */
+.btn {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--secondary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  font-family: "Special Elite", cursive;
+}
+
+.btn:hover {
+  background-color: var(--primary-color);
+}
+
+/* Footer */
+footer {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+}
+
+footer a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .recetas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  html {
+    /* scroll-padding-top se ajusta dinámicamente por JS */
+  }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.receta {
+  animation: fadeIn 0.5s ease-out;
+}
