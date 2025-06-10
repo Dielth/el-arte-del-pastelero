@@ -76,6 +76,36 @@ header {
   opacity: 1;
 }
 
+/* Logo styles */
+.logo {
+  text-align: center;
+  margin-bottom: 1rem;
+  animation: logoEntrance 1s ease-out;
+}
+
+.logo img {
+  max-width: 150px;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
+}
+
+@keyframes logoEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 header.hidden {
   transform: translateY(-100%);
   opacity: 0;
