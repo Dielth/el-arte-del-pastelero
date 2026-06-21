@@ -2,12 +2,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const header = document.querySelector("header");
   const root = document.documentElement;
 
-  const updateHeaderHeight = () => {
-    const headerHeight = header.offsetHeight;
-    root.style.setProperty("--header-height", `${headerHeight}px`);
-    document.body.style.paddingTop = `${headerHeight}px`; // Aplicar el padding al body
+const updateHeaderHeight = () => {
+  const headerHeight = header.offsetHeight;
+  root.style.setProperty("--header-height", `${headerHeight}px`);
+
+  // Detectar index.html
+  const isIndexPage =
+    document.getElementById("categorias") !== null;
+
+  if (!isIndexPage) {
+    // Mantener comportamiento actual en páginas internas
+    document.body.style.paddingTop = `${headerHeight}px`;
     root.style.scrollPaddingTop = `${headerHeight}px`;
-  };
+  } else {
+    // Index: header integrado al flujo normal
+    document.body.style.paddingTop = "0";
+    root.style.scrollPaddingTop = "0";
+  }
+};
 
   // Llama a la función al cargar la página y al redimensionar
   updateHeaderHeight();
@@ -155,6 +167,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const scrollThreshold = 50; // Minimum scroll amount before header starts hiding
 
   window.addEventListener("scroll", () => {
+    // No ocultar header en index.html (donde existe #categorias)
+    const isIndexPage = document.getElementById("categorias") !== null;
+    if (isIndexPage) return;
     const currentScroll =
       window.pageYOffset || document.documentElement.scrollTop;
 
