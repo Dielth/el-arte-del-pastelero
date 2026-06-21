@@ -1,5 +1,5 @@
 # el-arte-del-pastelero
-## version 2
+## version 3
 
 # Implementación de Búsqueda de Recetas
 
@@ -8,6 +8,38 @@ Este documento describe los cambios realizados para implementar la funcionalidad
 ## Resumen de Cambios
 
 Se implementó un sistema de búsqueda que permite a los usuarios buscar tanto por categorías existentes como por recetas individuales, con un selector de modo para alternar entre ambos tipos de búsqueda.
+
+## Actualizaciones Recientes (Junio 2026)
+
+### Corrección de Búsqueda en GitHub Pages
+**Problema:** La funcionalidad de búsqueda funcionaba correctamente en local pero fallaba en GitHub Pages después del despliegue.
+
+**Diagnóstico:** Se identificó que el problema estaba en la capa de render/visibilidad, no en la lógica de búsqueda. Los console.log de diagnóstico confirmaron que:
+- `filterCategories()` se ejecutaba correctamente
+- `searchRecetas()` se ejecutaba correctamente
+- `RECETAS_INDEX` cargaba correctamente
+- El filtrado lógico funcionaba, pero no se reflejaba visualmente
+
+**Solución aplicada:**
+1. **Eliminación de `cloneNode()`/`replaceChild()`:** Se eliminó el clonado de elementos DOM en `recetas-search.js` para evitar conflictos de event listeners.
+2. **Clases CSS explícitas:** Se agregaron clases `.container-visible` y `.container-hidden` con `!important` para controlar la visibilidad de contenedores en lugar de estilos inline.
+3. **Inicialización con clases:** Se agregaron las clases CSS correspondientes a `#categorias` y `#recetas-resultados` en `index.html`.
+
+### Ajustes del Header en index.html
+**Problema:** El header principal en index.html tenía comportamiento fijo (`position: fixed`) que causaba superposición con el contenido.
+
+**Solución aplicada:**
+1. **Clase CSS `.header-static`:** Se agregó una clase CSS en `styles.css` que sobrescribe `position: fixed` a `position: static` para el header en index.html.
+2. **Modificación de `updateHeaderHeight()`:** Se modificó la función en `main.js` para no aplicar `padding-top` y `scrollPaddingTop` cuando se detecta index.html (verificando si existe `#categorias`).
+3. **Aplicación de clase:** Se agregó la clase `header-static` al elemento `<header>` en `index.html`.
+
+**Resultado:**
+- En index.html: El header permanece estático en el flujo normal del documento, no sigue al scroll y no superpone contenido.
+- En categorías y demás páginas: El comportamiento reactivo del header (ocultarse al bajar, reaparecer al subir) se mantiene intacto.
+
+### Limpieza de Código
+- Se eliminaron todos los `console.log` de diagnóstico del código para dejar la consola limpia en producción.
+- Se mantienen los `console.error` para detectar errores reales (falta de elementos DOM, RECETAS_INDEX no disponible).
 
 ## Archivos Modificados/Creados
 
@@ -30,6 +62,9 @@ Se implementó un sistema de búsqueda que permite a los usuarios buscar tanto p
 ### 2. `index.html`
 **Cambios realizados:**
 
+- **Línea 16:** Header con clase estática
+  - `<header class="header-static">` para comportamiento estático en index.html
+
 - **Línea 28:** Cambio de título de sección
   - Antes: `<h4>Categorías</h4>`
   - Después: `<h4>Seleccione un modo de búsqueda</h4>`
@@ -39,8 +74,11 @@ Se implementó un sistema de búsqueda que permite a los usuarios buscar tanto p
   - Botón "Por categorías" (data-mode="categorias")
   - Botón "Por recetas" (data-mode="recetas")
 
+- **Línea 57:** Grid de categorías con clase visible
+  - `<div class="recetas-grid container-visible" id="categorias">`
+
 - **Línea 286:** Contenedor de resultados de recetas
-  - Agregado `<div class="recetas-resultados-grid" id="recetas-resultados" style="display: none;"></div>`
+  - `<div class="recetas-resultados-grid container-hidden" id="recetas-resultados">`
 
 - **Líneas 292-294:** Carga de scripts
   - `<script src="js/recetas-index.js"></script>` (nuevo)
@@ -75,6 +113,19 @@ Se implementó un sistema de búsqueda que permite a los usuarios buscar tanto p
 - **`.ver-mas`:** Estilos para snippets de contenido
   - Resaltado de términos de búsqueda con `<strong>`
 
+- **`.hidden-category`:** Clase para ocultar categorías filtradas
+  - `display: none !important` para asegurar visibilidad
+
+- **`.container-visible` y `.container-hidden`:** Clases para controlar visibilidad de contenedores
+  - `.container-visible`: `display: grid !important`
+  - `.container-hidden`: `display: none !important`
+  - Reemplazan estilos inline para mayor estabilidad
+
+- **`.header-static`:** Clase para header estático en index.html
+  - `position: static !important`
+  - `transform: none !important`
+  - `opacity: 1 !important`
+
 ### 4. `js/recetas-search.js` (NUEVO)
 **Descripción:** Archivo JavaScript que maneja la lógica de búsqueda de recetas y el cambio de modo.
 
@@ -94,12 +145,12 @@ Se implementó un sistema de búsqueda que permite a los usuarios buscar tanto p
 5. **Cambio de modo:** Event listeners en los botones del selector que:
    - Actualizan el estado activo
    - Cambian el placeholder del input
-   - Muestran/ocultan los grids correspondientes
+   - Muestran/ocultan los grids correspondientes usando clases CSS
    - Ejecutan la búsqueda correspondiente
 
 6. **Reimplementación de búsqueda de categorías:** Funciones `filterCategories()` y `navigateToSingleMatch()` independientes de main.js.
 
-7. **Gestión de event listeners:** Clonado y reemplazo de elementos input y button para evitar conflictos con main.js.
+7. **Gestión de visibilidad:** Uso de clases CSS `.container-visible` y `.container-hidden` en lugar de estilos inline para mayor estabilidad.
 
 **Placeholder del input:**
 - Modo Categorías: "Buscar categoría..."
@@ -108,7 +159,17 @@ Se implementó un sistema de búsqueda que permite a los usuarios buscar tanto p
 **Inicialización:** El placeholder se inicializa al cargar la página como "Buscar categoría...".
 
 ### 5. `js/main.js`
-**Cambios:** Ninguno. Este archivo permanece sin modificaciones. La lógica de búsqueda de categorías fue reimplementada en `recetas-search.js` para evitar conflictos.
+**Cambios realizados:**
+
+- **Desactivación de scroll ocultable en index.html:**
+  - Se agregó condición en el event listener de scroll para detectar index.html
+  - Si existe `#categorias` (solo en index.html), se retorna antes de aplicar lógica de ocultar header
+  - El comportamiento reactivo del header se mantiene en categorías y demás páginas
+
+- **Modificación de `updateHeaderHeight()`:**
+  - Se agregó condición para no aplicar `padding-top` y `scrollPaddingTop` en index.html
+  - Si existe `#categorias`, se omite la aplicación de padding dinámico
+  - Esto evita superposición de contenido en index.html donde el header es estático
 
 ## Funcionalidad Implementada
 
@@ -156,7 +217,9 @@ El nuevo sistema es completamente compatible con el código existente:
 
 ## Notas Técnicas
 
-- El sistema usa `cloneNode()` y `replaceChild()` para evitar conflictos de event listeners con main.js
+- El sistema usa clases CSS explícitas (`.container-visible`, `.container-hidden`) para controlar la visibilidad de contenedores en lugar de estilos inline
 - La normalización de texto usa `normalize("NFD")` y `replace(/[\u0300-\u036f]/g, "")` para eliminar acentos
 - Los snippets generan contexto alrededor del término de búsqueda (50 caracteres antes y después)
 - El sistema es completamente responsive gracias al uso de CSS Grid
+- El header tiene comportamiento condicional: estático en index.html, reactivo en categorías y demás páginas
+- La detección de index.html se realiza verificando la existencia del elemento `#categorias`
