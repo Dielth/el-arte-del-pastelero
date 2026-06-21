@@ -21,7 +21,7 @@ const updateHeaderHeight = () => {
   }
 };
 
-  // Llama a la función al cargar la página y al redimensionar
+  // Llama a la función al momento de cargar la página y al redimensionar
   updateHeaderHeight();
   window.addEventListener("resize", updateHeaderHeight);
 
