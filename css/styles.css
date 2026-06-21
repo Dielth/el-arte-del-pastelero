@@ -277,3 +277,193 @@ footer a:hover {
 .receta {
   animation: fadeIn 0.5s ease-out;
 }
+
+/* Clase para ocultar categorías filtradas */
+.hidden-category {
+  display: none !important;
+}
+
+/* Clases para controlar visibilidad de contenedores */
+.container-visible {
+  display: grid !important;
+}
+
+.container-hidden {
+  display: none !important;
+}
+
+/* Buscador de Categorías */
+.search-container {
+  display: flex;
+  max-width: 500px;
+  margin: 1.5rem auto 2.5rem;
+  background-color: var(--card-background);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.search-container:focus-within {
+  border-color: var(--accent-color);
+}
+
+#search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--new-white);
+  font-family: "Montserrat Bold", sans-serif;
+  font-size: 1rem;
+  padding: 0.8rem 1rem;
+}
+
+#search-input::placeholder {
+  color: #888888;
+  font-weight: normal;
+}
+
+#search-button {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--new-white);
+  cursor: pointer;
+  padding: 0 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+#search-button:hover {
+  color: var(--accent-color);
+}
+
+/* Mensaje sin resultados */
+.no-results-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #888888;
+  font-family: "Montserrat Bold", sans-serif;
+  font-size: 1.1rem;
+}
+
+/* Selector de Modo de Búsqueda */
+.search-mode-selector {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto 1rem;
+  background-color: var(--card-background);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.mode-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--new-white);
+  font-family: "Special Elite", cursive;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mode-btn:last-child {
+  border-right: none;
+}
+
+.mode-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mode-btn.active {
+  background-color: var(--primary-color);
+  color: var(--new-white);
+}
+
+.mode-btn.active:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Grid de Resultados de Recetas */
+.recetas-resultados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Tarjeta de Resultado de Receta */
+.resultado-receta-card {
+  background: var(--card-background);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.resultado-receta-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  border-color: var(--accent-color);
+}
+
+.resultado-receta-card h3 {
+  font-family: "Ink Free", cursive;
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  margin-bottom: 0.8rem;
+}
+
+.category-badge {
+  display: inline-block;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-family: "Montserrat Bold", sans-serif;
+  margin-bottom: 1rem;
+}
+
+.resultado-receta-card .ver-mas {
+  font-family: "Montserrat Bold", sans-serif;
+  color: #888888;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.resultado-receta-card .ver-mas strong {
+  color: var(--accent-color);
+}
+
+/* CORS Warning */
+.cors-warning {
+  background-color: rgba(241, 54, 54, 0.1);
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  padding: 1rem;
+  margin: 1rem 0;
+  color: var(--new-white);
+  font-family: "Montserrat Bold", sans-serif;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.cors-warning code {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: monospace;
+}
