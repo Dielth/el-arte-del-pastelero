@@ -1,6 +1,7 @@
-// Índice de recetas para búsqueda
+// Índice para búsqueda de recetas
 // Estrategia: Archivo JavaScript estático con array de recetas
 // Para agregar nuevas recetas, añadir objetos al array RECETAS_INDEX
+//Esto es una mejora QOL al sitio
 
 const RECETAS_INDEX = [
   {
