@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="icon" type="image/x-icon" href="images/logo-programa-ico.ico">
+    <link rel="icon" type="image/x-icon" href="images/logo-programa-ico.ico" />
     <title>El Arte del Panadero y Pastelero</title>
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/categorias.css" />
@@ -14,7 +14,7 @@
   </head>
   <body>
     <header>
-       <div class="logo">
+      <div class="logo">
         <img
           src="logo-programa.png"
           alt="Logo El Arte del Panadero y Pastelero"
@@ -25,7 +25,34 @@
 
     <main>
       <div class="container">
-        <h4>Categorías</h4>
+        <h4>Seleccione un modo de búsqueda</h4>
+
+        <div class="search-mode-selector">
+          <button type="button" class="mode-btn active" data-mode="categorias">Por categorías</button>
+          <button type="button" class="mode-btn" data-mode="recetas">Por recetas</button>
+        </div>
+
+        <div class="search-container">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Buscar categoría..."
+            autocomplete="off"
+          />
+          <button id="search-button" aria-label="Buscar categoría">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="currentColor"
+            >
+              <path
+                d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+              />
+            </svg>
+          </button>
+        </div>
 
         <div class="recetas-grid" id="categorias">
           <!-- Panadería Básica -->
@@ -255,11 +282,15 @@
             >
           </div>
         </div>
+
+        <div class="recetas-resultados-grid" id="recetas-resultados" style="display: none;"></div>
       </div>
     </main>
 
     <footer></footer>
 
+    <script src="js/recetas-index.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/recetas-search.js"></script>
   </body>
 </html>
