@@ -111,6 +111,13 @@ header.hidden {
   opacity: 0;
 }
 
+/* Header estático para index.html */
+header.header-static {
+  position: static !important;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
 nav {
   max-width: 1200px;
   margin: 0 auto;
