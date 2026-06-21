@@ -8,15 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("search-input");
   const searchButton = document.getElementById("search-button");
 
-  console.log('[DIAGNOSTICO] Elementos DOM encontrados:');
-  console.log('[DIAGNOSTICO] modeButtons:', modeButtons.length);
-  console.log('[DIAGNOSTICO] categoriasGrid:', categoriasGrid);
-  console.log('[DIAGNOSTICO] recetasResultados:', recetasResultados);
-  console.log('[DIAGNOSTICO] searchInput:', searchInput);
-  console.log('[DIAGNOSTICO] searchButton:', searchButton);
 
   if (!modeButtons.length || !categoriasGrid || !recetasResultados || !searchInput) {
-    console.error('[DIAGNOSTICO] Faltan elementos DOM necesarios');
+    console.error('Faltan elementos DOM necesarios');
     return; // No hacer nada si los elementos no existen
   }
 
@@ -59,15 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Función para buscar recetas
   const searchRecetas = (query) => {
-    console.log('[DIAGNOSTICO] searchRecetas llamada con query:', query);
     if (!RECETAS_INDEX || RECETAS_INDEX.length === 0) {
-      console.log('[DIAGNOSTICO] RECETAS_INDEX no disponible o vacío');
+      console.error('RECETAS_INDEX no disponible o vacío');
       recetasResultados.innerHTML = '<div class="no-results-message">No hay recetas indexadas.</div>';
       return;
     }
 
     const cleanQuery = normalizeText(query);
-    console.log('[DIAGNOSTICO] cleanQuery:', cleanQuery);
     
     if (!cleanQuery) {
       recetasResultados.innerHTML = '';
@@ -80,7 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const contenidoMatch = normalizeText(receta.contenido).includes(cleanQuery);
       return nombreMatch || categoriaMatch || contenidoMatch;
     });
-    console.log('[DIAGNOSTICO] results encontrados:', results.length);
 
     if (results.length === 0) {
       recetasResultados.innerHTML = '<div class="no-results-message">No se encontraron recetas que coincidan con tu búsqueda.</div>';
@@ -95,7 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="ver-mas">${createSnippet(receta.contenido, query)}</div>
       </div>
     `).join('');
-    console.log('[DIAGNOSTICO] HTML generado en recetasResultados');
 
     // Agregar event listeners a las tarjetas
     document.querySelectorAll(".resultado-receta-card").forEach((card) => {
@@ -127,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Reimplementar lógica de búsqueda de categorías (independiente de main.js)
   const recetaCards = categoriasGrid.querySelectorAll(".receta");
-  console.log('[DIAGNOSTICO] recetaCards encontrados:', recetaCards.length);
   
   const categories = Array.from(recetaCards).map((card) => {
     const titleEl = card.querySelector("h3");
@@ -140,21 +129,17 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/[\u0300-\u036f]/g, "");
     return { card, url, normalizedTitle };
   });
-  console.log('[DIAGNOSTICO] categories array creado:', categories.length);
 
   const filterCategories = (query) => {
-    console.log('[DIAGNOSTICO] filterCategories llamada con query:', query);
     const cleanQuery = query
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
-    console.log('[DIAGNOSTICO] cleanQuery:', cleanQuery);
     
     let visibleCount = 0;
 
     categories.forEach((cat) => {
       const matches = cat.normalizedTitle.includes(cleanQuery);
-      console.log('[DIAGNOSTICO] Categoria:', cat.normalizedTitle, 'matches:', matches);
       if (matches) {
         cat.card.classList.remove("hidden-category");
         visibleCount++;
@@ -162,7 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
         cat.card.classList.add("hidden-category");
       }
     });
-    console.log('[DIAGNOSTICO] visibleCount:', visibleCount);
 
     // Mostrar/ocultar mensaje de sin resultados
     let noResultsDiv = categoriasGrid.querySelector(".no-results-message");
@@ -174,7 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
       categoriasGrid.appendChild(noResultsDiv);
     }
     noResultsDiv.style.display = visibleCount === 0 ? "block" : "none";
-    console.log('[DIAGNOSTICO] noResultsDiv display:', noResultsDiv.style.display);
   };
 
   const navigateToSingleMatch = () => {
@@ -193,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
   modeButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const mode = button.getAttribute("data-mode");
-      console.log('[DIAGNOSTICO] Botón modo clickeado:', mode);
       
       // Actualizar estado activo
       modeButtons.forEach((btn) => btn.classList.remove("active"));
@@ -201,7 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
       
       // Actualizar modo actual
       currentMode = mode;
-      console.log('[DIAGNOSTICO] currentMode actualizado a:', currentMode);
       
       // Cambiar placeholder
       if (mode === "categorias") {
@@ -210,7 +191,6 @@ document.addEventListener("DOMContentLoaded", () => {
         categoriasGrid.classList.add("container-visible");
         recetasResultados.classList.remove("container-visible");
         recetasResultados.classList.add("container-hidden");
-        console.log('[DIAGNOSTICO] Modo categorías activado');
         // Restaurar búsqueda de categorías
         filterCategories(inputElement.value);
       } else {
@@ -219,7 +199,6 @@ document.addEventListener("DOMContentLoaded", () => {
         categoriasGrid.classList.add("container-hidden");
         recetasResultados.classList.remove("container-hidden");
         recetasResultados.classList.add("container-visible");
-        console.log('[DIAGNOSTICO] Modo recetas activado');
         // Iniciar búsqueda de recetas
         searchRecetas(inputElement.value);
       }
@@ -227,7 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   
   inputElement.addEventListener("input", (e) => {
-    console.log('[DIAGNOSTICO] input event disparado, valor:', e.target.value, 'currentMode:', currentMode);
     if (currentMode === "categorias") {
       filterCategories(e.target.value);
     } else {
