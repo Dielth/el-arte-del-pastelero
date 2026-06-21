@@ -206,15 +206,19 @@ document.addEventListener("DOMContentLoaded", () => {
       // Cambiar placeholder
       if (mode === "categorias") {
         inputElement.placeholder = "Buscar categoría...";
-        categoriasGrid.style.display = "grid";
-        recetasResultados.style.display = "none";
+        categoriasGrid.classList.remove("container-hidden");
+        categoriasGrid.classList.add("container-visible");
+        recetasResultados.classList.remove("container-visible");
+        recetasResultados.classList.add("container-hidden");
         console.log('[DIAGNOSTICO] Modo categorías activado');
         // Restaurar búsqueda de categorías
         filterCategories(inputElement.value);
       } else {
         inputElement.placeholder = "Buscar recetas...";
-        categoriasGrid.style.display = "none";
-        recetasResultados.style.display = "grid";
+        categoriasGrid.classList.remove("container-visible");
+        categoriasGrid.classList.add("container-hidden");
+        recetasResultados.classList.remove("container-hidden");
+        recetasResultados.classList.add("container-visible");
         console.log('[DIAGNOSTICO] Modo recetas activado');
         // Iniciar búsqueda de recetas
         searchRecetas(inputElement.value);
