@@ -1,5 +1,6 @@
 // Lógica del Selector de Modo y Búsqueda de Recetas
 // Este archivo se carga después de main.js y maneja la búsqueda de recetas
+// Mejora QOL de Busqueda
 
 document.addEventListener("DOMContentLoaded", () => {
   const modeButtons = document.querySelectorAll(".mode-btn");
