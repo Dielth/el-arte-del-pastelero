@@ -164,10 +164,86 @@ document.addEventListener("DOMContentLoaded", () => {
         // Scrolling down & past header
         header.classList.add("hidden");
       } else {
-        // Scrolling up
         header.classList.remove("hidden");
       }
       lastScrollTop = currentScroll;
     }
   });
+
+  // Lógica del Buscador de Categorías
+  const searchInput = document.getElementById("search-input");
+  const searchButton = document.getElementById("search-button");
+  const recetasGrid = document.getElementById("categorias");
+
+  if (searchInput && recetasGrid) {
+    const recetaCards = recetasGrid.querySelectorAll(".receta");
+
+    // Crear el elemento de "sin resultados"
+    const noResultsDiv = document.createElement("div");
+    noResultsDiv.className = "no-results-message";
+    noResultsDiv.style.display = "none";
+    noResultsDiv.textContent = "No se encontraron categorías que coincidan con tu búsqueda.";
+    recetasGrid.appendChild(noResultsDiv);
+
+    // Mapeo dinámico de tarjetas
+    const categories = Array.from(recetaCards).map((card) => {
+      const titleEl = card.querySelector("h3");
+      const linkEl = card.querySelector("a.btn");
+      const title = titleEl ? titleEl.textContent.trim() : "";
+      const url = linkEl ? linkEl.getAttribute("href") : "";
+      const normalizedTitle = title
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+      return { card, url, normalizedTitle };
+    });
+
+    const filterCategories = (query) => {
+      const cleanQuery = query
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+      
+      let visibleCount = 0;
+
+      categories.forEach((cat) => {
+        if (cat.normalizedTitle.includes(cleanQuery)) {
+          cat.card.classList.remove("hidden-category");
+          visibleCount++;
+        } else {
+          cat.card.classList.add("hidden-category");
+        }
+      });
+
+      noResultsDiv.style.display = visibleCount === 0 ? "block" : "none";
+    };
+
+    const navigateToSingleMatch = () => {
+      const visibleCategories = categories.filter(
+        (cat) => !cat.card.classList.contains("hidden-category")
+      );
+      // Solo redirigir si hay exactamente una coincidencia visible
+      if (visibleCategories.length === 1 && visibleCategories[0].url) {
+        window.location.href = visibleCategories[0].url;
+      }
+    };
+
+    searchInput.addEventListener("input", (e) => {
+      filterCategories(e.target.value);
+    });
+
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        navigateToSingleMatch();
+      }
+    });
+
+    if (searchButton) {
+      searchButton.addEventListener("click", () => {
+        navigateToSingleMatch();
+      });
+    }
+  }
 });
