@@ -1,7 +1,6 @@
 // Lógica del Selector de Modo y Búsqueda de Recetas
 // Este archivo se carga después de main.js y maneja la búsqueda de recetas
 // Mejora QOL de Busqueda
-
 document.addEventListener("DOMContentLoaded", () => {
   const modeButtons = document.querySelectorAll(".mode-btn");
   const categoriasGrid = document.getElementById("categorias");
@@ -165,12 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Clonar y reemplazar event listeners de input
-  const newInput = searchInput.cloneNode(true);
-  searchInput.parentNode.replaceChild(newInput, searchInput);
-  
-  // Actualizar la referencia al input
-  const inputElement = newInput;
+  // Usar el input original sin clonar
+  const inputElement = searchInput;
 
   // Event listeners para los botones de modo
   modeButtons.forEach((button) => {
@@ -220,12 +215,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Clonar y reemplazar event listener del botón de búsqueda
+  // Usar el botón original sin clonar
   if (searchButton) {
-    const newButton = searchButton.cloneNode(true);
-    searchButton.parentNode.replaceChild(newButton, searchButton);
-    
-    newButton.addEventListener("click", () => {
+    searchButton.addEventListener("click", () => {
       if (currentMode === "categorias") {
         navigateToSingleMatch();
       } else {
